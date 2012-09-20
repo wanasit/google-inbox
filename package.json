@@ -1,0 +1,12 @@
+{
+  "name": "node-gmail",
+  "description": "Simplified node-imap for deliberately working with Gmail",
+  "repository":
+    { "type" : "git",
+      "url" : "https://github.com/berryboy/node-gmail"
+    },
+  "version": "0.0.1",
+  "main": "./index",
+  "dependencies": {
+  }
+}

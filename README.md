@@ -1,4 +1,5 @@
 node-gmail
 ==========
 
-node-imap's extension for deliberately working with Gmail 
+Simplified node-imap for deliberately working with Gmail.
+
