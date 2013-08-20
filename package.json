@@ -1,12 +1,16 @@
 {
-  "name": "node-gmail",
-  "description": "Simplified node-imap for deliberately working with Gmail",
+  "name": "gmail-inbox",
+  "description": "Simplified node-imap for working with Gmail",
   "repository":
     { "type" : "git",
       "url" : "https://github.com/berryboy/node-gmail"
     },
-  "version": "0.0.1",
-  "main": "./index",
+  "version": "0.1.0",
+  "main": "./gmail",
   "dependencies": {
+    "inbox": "1.1.x",
+    "passport": "0.1.x",
+    "passport-google-oauth": "0.1.x",
+    "express": "3.x.x"
   }
 }
