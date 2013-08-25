@@ -1,5 +1,6 @@
 var inbox = require('inbox');
 var util = require('util');
+var MailParser = require("mailparser").MailParser;
 
 
 module.exports = function(options, callback) {
@@ -38,4 +39,16 @@ module.exports = function(options, callback) {
 	return client;
 };
 
+
+inbox.IMAPClient.prototype.fetchMessage = function(uid, callback) {
+	
+    var stream = this.createMessageStream(uid);
+    var mailparser = new MailParser();
+      
+    mailparser.on("end", function(mail){
+        return callback(null, mail);
+    });
+
+    stream.pipe(mailparser);
+};
 

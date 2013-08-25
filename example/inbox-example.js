@@ -89,20 +89,16 @@ app.all('/:uid', function(req, res){
   
   gmail({email:email, accessToken:accessToken, debug:true}, function(err, client){
 
-    client.openMailbox("INBOX", function(error, info){
+    client.openMailbox("INBOX", {readOnly : true}, function(error, info){
       if(error) throw error;
-  
-      var data = '';
-      var stream = client.createMessageStream(uid);
-
-      stream.on('data',function(chunk) { data += chunk });
-      stream.on('end',function() { return res.send(data); });
-    });
-  });
-});
-
+      
+      client.fetchMessage(uid, function(err, mail) {
+        if(error) throw error;
+        return res.send(mail);
+      })
+    })
+  })
+})
 
 
-
-4804
 
