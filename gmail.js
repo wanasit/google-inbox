@@ -33,7 +33,10 @@ module.exports = function(options, callback) {
     
     client.connect();
 	client.on("connect", function(){
-      	callback(null, client);
+		client.openMailbox("INBOX", options, function(error, info){
+      		if(error) return callback(error, null);
+      		return callback(null, client);
+      	});
   	});
 
 	return client;
@@ -46,9 +49,16 @@ inbox.IMAPClient.prototype.fetchMessage = function(uid, callback) {
     var mailparser = new MailParser();
       
     mailparser.on("end", function(mail){
-        return callback(null, mail);
+    	if(callback) callback(null, mail);
+    	callback = null;
     });
 
     stream.pipe(mailparser);
+    stream.on('error',function(error) {
+    	if(callback) callback(error, null);
+    	callback = null;
+    })
 };
+
+
 

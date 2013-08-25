@@ -61,19 +61,18 @@ app.all('/', function(req, res){
   var accessToken  = req.session.accessToken;
   var email        = req.session.email;
   
-  gmail({email:email, accessToken:accessToken, debug:true}, function(err, client){
+  gmail({email:email, accessToken:accessToken, debug:true}, function(error, client){
 
-      client.openMailbox("INBOX", function(error, info){
-          if(error) throw error;
-  
-          client.listMessages(-10, function(err, messages){
-              messages.forEach(function(message){
-                  console.log(message.UID + ": " + message.title);
-              });
-              
-              
-          return res.send(messages);
+    client.listMessages(-10, function(error, messages){
+
+      if(error) {
+        return res.send(500, error); 
+      }
+
+      messages.forEach(function(message){
+          console.log(message.UID + ": " + message.title);      
       });
+      return res.send(messages);
     });
   });
 });
@@ -87,15 +86,14 @@ app.all('/:uid', function(req, res){
   var email        = req.session.email;
   var uid          = req.params.uid;
   
-  gmail({email:email, accessToken:accessToken, debug:true}, function(err, client){
+  gmail({email:email, accessToken:accessToken, debug:true, readOnly : true}, function(err, client){
 
-    client.openMailbox("INBOX", {readOnly : true}, function(error, info){
-      if(error) throw error;
-      
-      client.fetchMessage(uid, function(err, mail) {
-        if(error) throw error;
-        return res.send(mail);
-      })
+    client.fetchMessage(uid, function(error, mail) {
+      if(error) {
+        return res.send(404, error); 
+      }
+
+      return res.send(mail);
     })
   })
 })
